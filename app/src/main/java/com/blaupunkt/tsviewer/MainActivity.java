@@ -54,6 +54,15 @@ public class MainActivity extends Activity {
         Button selectButton = new Button(this);
         selectButton.setText("Select TS Recording");
 
+        Button zoomInButton = new Button(this);
+        zoomInButton.setText("Zoom +");
+
+        Button zoomOutButton = new Button(this);
+        zoomOutButton.setText("Zoom -");
+
+        Button resetViewButton = new Button(this);
+        resetViewButton.setText("Reset View");
+
         Button fullscreenButton = new Button(this);
         fullscreenButton.setText("Fullscreen");
 
@@ -142,6 +151,9 @@ public class MainActivity extends Activity {
         root.addView(title);
         root.addView(status);
         root.addView(selectButton);
+        root.addView(zoomInButton);
+        root.addView(zoomOutButton);
+        root.addView(resetViewButton);
         root.addView(fullscreenButton);
         root.addView(viewModeSpinner);
         root.addView(playerView, videoParams);
@@ -149,6 +161,25 @@ public class MainActivity extends Activity {
         setContentView(root);
 
         selectButton.setOnClickListener(v -> selectVideo());
+
+        zoomInButton.setOnClickListener(v -> {
+            viewController.setZoom(viewController.getZoom() + 0.5f);
+            status.setText(
+                    "Zoom: " + String.format("%.1fx", viewController.getZoom())
+            );
+        });
+
+        zoomOutButton.setOnClickListener(v -> {
+            viewController.setZoom(viewController.getZoom() - 0.5f);
+            status.setText(
+                    "Zoom: " + String.format("%.1fx", viewController.getZoom())
+            );
+        });
+
+        resetViewButton.setOnClickListener(v -> {
+            viewController.resetView();
+            status.setText("View reset.");
+        });
 
         fullscreenButton.setOnClickListener(v -> toggleFullscreen());
     }
