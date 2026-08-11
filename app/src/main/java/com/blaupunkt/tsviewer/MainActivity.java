@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.net.Uri;
+import android.database.Cursor;
+import android.provider.OpenableColumns;
+import android.database.Cursor;
+import android.provider.OpenableColumns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -56,15 +60,18 @@ public class MainActivity extends Activity {
 
         TextView title = new TextView(this);
         title.setText("Blaupunkt TS Viewer");
+        title.setGravity(Gravity.CENTER);
         title.setTextSize(24);
 
         fileInfo = new TextView(this);
         fileInfo.setText("No recording selected.");
         fileInfo.setTextSize(15);
+        fileInfo.setPadding(8, 8, 8, 8);
 
         status = new TextView(this);
         status.setText("Ready.");
         status.setTextSize(15);
+        status.setPadding(8, 8, 8, 8);
 
         Button settingsButton = new Button(this);
         settingsButton.setText("Settings");
@@ -305,14 +312,96 @@ public class MainActivity extends Activity {
             } catch (Exception ignored) {
             }
 
-            String name = uri.getLastPathSegment();
-
-            fileInfo.setText(
-                    "Recording: " + name
-            );
+            updateFileInfo(uri);
 
             playRecording(uri);
         }
+    }
+
+
+    private String getFileName(Uri uri) {
+
+        String result = null;
+
+        if ("content".equals(uri.getScheme())) {
+
+            try (Cursor cursor = getContentResolver().query(
+                    uri,
+                    new String[]{OpenableColumns.DISPLAY_NAME},
+                    null,
+                    null,
+                    null)) {
+
+                if (cursor != null && cursor.moveToFirst()) {
+
+                    int index = cursor.getColumnIndex(
+                            OpenableColumns.DISPLAY_NAME
+                    );
+
+                    if (index >= 0) {
+                        result = cursor.getString(index);
+                    }
+                }
+
+            } catch (Exception ignored) {
+            }
+        }
+
+        if (result == null) {
+            result = uri.getLastPathSegment();
+        }
+
+        return result != null ? result : "Unknown recording";
+    }
+
+    private String getFileSize(Uri uri) {
+
+        try (Cursor cursor = getContentResolver().query(
+                uri,
+                new String[]{OpenableColumns.SIZE},
+                null,
+                null,
+                null)) {
+
+            if (cursor != null && cursor.moveToFirst()) {
+
+                int index = cursor.getColumnIndex(
+                        OpenableColumns.SIZE
+                );
+
+                if (index >= 0 && !cursor.isNull(index)) {
+
+                    long size = cursor.getLong(index);
+
+                    if (size < 1024L * 1024L) {
+                        return String.format(
+                                "%.1f KB",
+                                size / 1024.0
+                        );
+                    }
+
+                    return String.format(
+                            "%.2f MB",
+                            size / (1024.0 * 1024.0)
+                    );
+                }
+            }
+
+        } catch (Exception ignored) {
+        }
+
+        return "Unknown size";
+    }
+
+    private void updateFileInfo(Uri uri) {
+
+        String name = getFileName(uri);
+        String size = getFileSize(uri);
+
+        fileInfo.setText(
+                "File: " + name + "\n"
+                        + "Size: " + size
+        );
     }
 
     private void playRecording(Uri uri) {

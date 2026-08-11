@@ -1,0 +1,59 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.blaupunkt.tsviewer"
+4    android:versionCode="2"
+5    android:versionName="2.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="35" />
+10
+11    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+11-->[androidx.media3:media3-common:1.4.1] /home/codespace/.gradle/caches/9.4.0/transforms/206b7e3288bfab934f314e87942aaeb1/transformed/media3-common-1.4.1/AndroidManifest.xml:22:5-79
+11-->[androidx.media3:media3-common:1.4.1] /home/codespace/.gradle/caches/9.4.0/transforms/206b7e3288bfab934f314e87942aaeb1/transformed/media3-common-1.4.1/AndroidManifest.xml:22:22-76
+12
+13    <permission
+13-->[androidx.core:core:1.9.0] /home/codespace/.gradle/caches/9.4.0/transforms/25b5ffe1b09232c97f0238c7db9573a8/transformed/core-1.9.0/AndroidManifest.xml:22:5-24:47
+14        android:name="com.blaupunkt.tsviewer.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+14-->[androidx.core:core:1.9.0] /home/codespace/.gradle/caches/9.4.0/transforms/25b5ffe1b09232c97f0238c7db9573a8/transformed/core-1.9.0/AndroidManifest.xml:23:9-81
+15        android:protectionLevel="signature" />
+15-->[androidx.core:core:1.9.0] /home/codespace/.gradle/caches/9.4.0/transforms/25b5ffe1b09232c97f0238c7db9573a8/transformed/core-1.9.0/AndroidManifest.xml:24:9-44
+16
+17    <uses-permission android:name="com.blaupunkt.tsviewer.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+17-->[androidx.core:core:1.9.0] /home/codespace/.gradle/caches/9.4.0/transforms/25b5ffe1b09232c97f0238c7db9573a8/transformed/core-1.9.0/AndroidManifest.xml:26:5-97
+17-->[androidx.core:core:1.9.0] /home/codespace/.gradle/caches/9.4.0/transforms/25b5ffe1b09232c97f0238c7db9573a8/transformed/core-1.9.0/AndroidManifest.xml:26:22-94
+18
+19    <application
+19-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:2:5-18:19
+20        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+20-->[androidx.core:core:1.9.0] /home/codespace/.gradle/caches/9.4.0/transforms/25b5ffe1b09232c97f0238c7db9573a8/transformed/core-1.9.0/AndroidManifest.xml:28:18-86
+21        android:debuggable="true"
+22        android:extractNativeLibs="false"
+23        android:label="Blaupunkt TS Viewer"
+23-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:4:9-44
+24        android:resizeableActivity="true"
+24-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:5:9-42
+25        android:theme="@style/AppTheme" >
+25-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:3:9-40
+26        <activity
+26-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:7:9-17:20
+27            android:name="com.blaupunkt.tsviewer.MainActivity"
+27-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:8:13-41
+28            android:exported="true"
+28-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:10:13-36
+29            android:screenOrientation="portrait" >
+29-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:9:13-49
+30            <intent-filter>
+30-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:12:13-15:29
+31                <action android:name="android.intent.action.MAIN" />
+31-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:13:17-69
+31-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:13:25-66
+32
+33                <category android:name="android.intent.category.LAUNCHER" />
+33-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:14:17-77
+33-->/workspaces/blaupunkt-tsviewer/app/src/main/AndroidManifest.xml:14:27-74
+34            </intent-filter>
+35        </activity>
+36    </application>
+37
+38</manifest>

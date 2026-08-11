@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.blaupunkt.tsviewer.app-mergeDebugResources-11:/values-en-rCA/values-en-rCA.xml",
+            "map": [
+                {
+                    "source": "/home/codespace/.gradle/caches/9.4.0/transforms/25b5ffe1b09232c97f0238c7db9573a8/transformed/core-1.9.0/res/values-en-rCA/values-en-rCA.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    }
+                }
+            ]
+        }
+    ]
+}
