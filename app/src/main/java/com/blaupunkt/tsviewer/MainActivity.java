@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+
+import com.blaupunkt.tsviewer.view.ViewController;
+import com.blaupunkt.tsviewer.view.ViewMode;
 
 import androidx.media3.common.MediaItem;
 import androidx.media3.common.PlaybackException;
@@ -22,11 +27,13 @@ public class MainActivity extends Activity {
     private ExoPlayer player;
     private PlayerView playerView;
     private TextView status;
+    private ViewController viewController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        viewController = new ViewController();
         buildInterface();
     }
 
@@ -50,6 +57,78 @@ public class MainActivity extends Activity {
         Button fullscreenButton = new Button(this);
         fullscreenButton.setText("Fullscreen");
 
+        Spinner viewModeSpinner = new Spinner(this);
+
+        String[] modes = {
+                "Original",
+                "Dewarp",
+                "Panorama",
+                "360 View"
+        };
+
+        ArrayAdapter<String> modeAdapter =
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        modes
+                );
+
+        modeAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item
+        );
+
+        viewModeSpinner.setAdapter(modeAdapter);
+
+        viewModeSpinner.setOnItemSelectedListener(
+                new android.widget.AdapterView.OnItemSelectedListener() {
+
+                    @Override
+                    public void onItemSelected(
+                            android.widget.AdapterView<?> parent,
+                            View view,
+                            int position,
+                            long id) {
+
+                        ViewMode mode;
+
+                        switch (position) {
+                            case 1:
+                                mode = ViewMode.DEWARP;
+                                break;
+
+                            case 2:
+                                mode = ViewMode.PANORAMA;
+                                break;
+
+                            case 3:
+                                mode = ViewMode.VIEW_360;
+                                break;
+
+                            default:
+                                mode = ViewMode.ORIGINAL;
+                                break;
+                        }
+
+                        viewController.setMode(mode);
+
+                        if (mode == ViewMode.DEWARP && !viewController.isDewarpAvailable()) {
+                            status.setText(
+                                    "Dewarp calibration will be enabled after TS analysis."
+                            );
+                        } else {
+                            status.setText(
+                                    "View mode: " + mode.name()
+                            );
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(
+                            android.widget.AdapterView<?> parent) {
+                    }
+                }
+        );
+
         playerView = new PlayerView(this);
         playerView.setUseController(true);
 
@@ -64,6 +143,7 @@ public class MainActivity extends Activity {
         root.addView(status);
         root.addView(selectButton);
         root.addView(fullscreenButton);
+        root.addView(viewModeSpinner);
         root.addView(playerView, videoParams);
 
         setContentView(root);
