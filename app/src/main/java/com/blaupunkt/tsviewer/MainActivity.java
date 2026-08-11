@@ -20,6 +20,7 @@ import androidx.media3.ui.PlayerView;
 
 import com.blaupunkt.tsviewer.view.ViewController;
 import com.blaupunkt.tsviewer.view.ViewMode;
+import com.blaupunkt.tsviewer.settings.ViewerSettings;
 
 public class MainActivity extends Activity {
 
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
     private TextView fileInfo;
 
     private ViewController viewController;
+    private ViewerSettings settings;
 
     private float lastTouchX;
     private float lastTouchY;
@@ -41,6 +43,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         viewController = new ViewController();
+        settings = new ViewerSettings();
 
         buildInterface();
     }
@@ -62,6 +65,9 @@ public class MainActivity extends Activity {
         status = new TextView(this);
         status.setText("Ready.");
         status.setTextSize(15);
+
+        Button settingsButton = new Button(this);
+        settingsButton.setText("Settings");
 
         Button selectButton = new Button(this);
         selectButton.setText("Select TS Recording");
@@ -113,6 +119,7 @@ public class MainActivity extends Activity {
         root.addView(title);
         root.addView(fileInfo);
         root.addView(status);
+        root.addView(settingsButton);
         root.addView(selectButton);
         root.addView(viewModeSpinner);
         root.addView(zoomInButton);
@@ -123,6 +130,7 @@ public class MainActivity extends Activity {
 
         setContentView(root);
 
+        settingsButton.setOnClickListener(v -> showSettings());
         selectButton.setOnClickListener(v -> selectVideo());
 
         zoomInButton.setOnClickListener(v -> {
@@ -366,6 +374,90 @@ public class MainActivity extends Activity {
         player.prepare();
 
         player.play();
+    }
+
+
+    private void showSettings() {
+
+        LinearLayout panel = new LinearLayout(this);
+        panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(40, 30, 40, 30);
+
+        TextView title = new TextView(this);
+        title.setText("Viewer Settings");
+        title.setTextSize(22);
+
+        android.widget.CheckBox autoPlay =
+                new android.widget.CheckBox(this);
+        autoPlay.setText("Auto-play selected recording");
+        autoPlay.setChecked(settings.isAutoPlay());
+
+        android.widget.CheckBox mute =
+                new android.widget.CheckBox(this);
+        mute.setText("Mute audio");
+        mute.setChecked(settings.isMuteAudio());
+
+        android.widget.CheckBox fullscreen =
+                new android.widget.CheckBox(this);
+        fullscreen.setText("Fullscreen");
+        fullscreen.setChecked(settings.isFullscreen());
+
+        Button restart = new Button(this);
+        restart.setText("Restart Playback");
+
+        panel.addView(title);
+        panel.addView(autoPlay);
+        panel.addView(mute);
+        panel.addView(fullscreen);
+        panel.addView(restart);
+
+        android.app.AlertDialog dialog =
+                new android.app.AlertDialog.Builder(this)
+                        .setView(panel)
+                        .setPositiveButton("Save", null)
+                        .setNegativeButton("Cancel", null)
+                        .create();
+
+        restart.setOnClickListener(v -> {
+            if (player != null) {
+                player.seekTo(0);
+                player.play();
+                status.setText("Playback restarted.");
+            } else {
+                status.setText("No recording selected.");
+            }
+        });
+
+        dialog.setOnShowListener(d -> {
+
+            dialog.getButton(
+                    android.app.AlertDialog.BUTTON_POSITIVE
+            ).setOnClickListener(v -> {
+
+                settings.setAutoPlay(
+                        autoPlay.isChecked()
+                );
+
+                settings.setMuteAudio(
+                        mute.isChecked()
+                );
+
+                settings.setFullscreen(
+                        fullscreen.isChecked()
+                );
+
+                if (player != null) {
+                    player.setVolume(
+                            settings.isMuteAudio() ? 0f : 1f
+                    );
+                }
+
+                status.setText("Settings saved.");
+                dialog.dismiss();
+            });
+        });
+
+        dialog.show();
     }
 
     private void updateViewStatus() {
